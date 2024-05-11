@@ -1,0 +1,63 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  background-color: black;
+  color: white;
+  padding: 10px 10px;
+  width: fit-content;
+}
+.folder,
+.file {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  padding: 4px;
+}
+
+.folder-open {
+  cursor: pointer;
+}
+.ml-2 {
+  margin-left: 20px;
+}
+
+.list-options {
+  width: 140px;
+  height: fit-content;
+  background-color: beige;
+  color: black;
+  margin: 10px 20px;
+  padding: 2px;
+  border-radius: 2px 5px 2px 5px;
+  margin-left: 60px;
+}
+.list-item {
+  list-style-type: none;
+  border-bottom: 2px black solid;
+  padding: 4px;
+  text-align: center;
+  cursor: pointer;
+}
+.list-item:hover {
+  background-color: rgb(173, 229, 219);
+}
+.b-0 {
+  border: 0;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.text {
+  padding-left: 4px;
+}
+
+.bg {
+  background-color: aqua;
+  width: fit-content;
+  padding: 1px 6px;
+}
