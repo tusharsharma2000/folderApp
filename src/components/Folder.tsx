@@ -3,21 +3,26 @@ import folder from "../assets/folder-solid.svg";
 import openFolder from "../assets/folder-open-solid.svg";
 import file from "../assets/file-solid.svg";
 
+interface FileData {
+  type: string;
+  name: string;
+  meta?: string;
+}
+
 interface FolderData {
   type: string;
   name: string;
-  data: FolderData[];
+  data: (FileData | FolderData)[];
 }
 
-interface ComponentProps {
-  files: FolderData[];
-  selectFile: boolean;
+interface Props {
+  files: FolderData;
 }
 
-const Folder = ({ files, selectFile }: ComponentProps) => {
+const Folder = ({ files }: Props) => {
   const [showFolder, setShowFolder] = useState<boolean>(false);
   const [showFileOptions, setShowFileOptions] = useState<boolean>(false);
-  const itemRef = useRef<HTMLDivElement>(null);
+  const itemRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -37,51 +42,45 @@ const Folder = ({ files, selectFile }: ComponentProps) => {
     };
   }, [showFileOptions]);
 
-  const handleClick = (e) => {
-    if (e.target.id === "copy") {
+  const handleClick = (e: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
+    const targetId = (e.target as HTMLElement).id;
+    if (targetId === "copy") {
       console.log("COPY");
-    }
-    if (e.target.id === "delete") {
+    } else if (targetId === "delete") {
       console.log("DELETE");
-    }
-    if (e.target.id === "rename") {
+    } else if (targetId === "rename") {
       console.log("RENAME");
     }
     setShowFileOptions(false);
   };
 
   return (
-    files &&
-    ((files.type === "folder" && (
-      <>
-        <div
-          className={`folder`}
-          // onClick={selectFileHandle}
-          onDoubleClick={() => setShowFolder(!showFolder)}
-        >
-          <span>
-            {showFolder ? (
-              <img src={openFolder} alt="Folder Icon" className="icon" />
-            ) : (
-              <img src={folder} alt="Folder Icon" className="icon" />
-            )}
-          </span>
-          <span className="text">{files.name}</span>
-        </div>
-        {showFolder &&
-          files.data &&
-          files.data.map((item) => (
-            <div className="ml-2">
-              <Folder
-                files={item}
-                selectFile={selectFile}
-                // selectFileHandle={selectFileHandle}
-              />
-            </div>
-          ))}
-      </>
-    )) ||
-      (files.type === "file" && (
+    <>
+      {files?.type === "folder" && (
+        <>
+          <div
+            className="folder"
+            onDoubleClick={() => setShowFolder(!showFolder)}
+          >
+            <span>
+              {showFolder ? (
+                <img src={openFolder} alt="Folder Icon" className="icon" />
+              ) : (
+                <img src={folder} alt="Folder Icon" className="icon" />
+              )}
+            </span>
+            <span className="text">{files.name}</span>
+          </div>
+          {files.data &&
+            showFolder &&
+            files.data.map((item, index) => (
+              <div className="ml-2" key={index}>
+                <Folder files={item as FolderData} />
+              </div>
+            ))}
+        </>
+      )}
+      {files?.type === "file" && (
         <>
           <div
             className="folder"
@@ -114,7 +113,8 @@ const Folder = ({ files, selectFile }: ComponentProps) => {
             </ul>
           )}
         </>
-      )))
+      )}
+    </>
   );
 };
 

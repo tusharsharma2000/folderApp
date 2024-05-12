@@ -6,7 +6,6 @@ function App() {
   const URL = "https://run.mocky.io/v3/d9c4f3d2-adf3-42aa-9664-1fde3e0ae151";
 
   const [data, setData] = useState();
-  const [selectFile, setSelectFile] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,19 +20,7 @@ function App() {
     fetchData();
   }, []);
 
-  const selectFileHandle = () => {
-    setSelectFile(!selectFile);
-  };
-
-  return (
-    <div>
-      <Folder
-        files={data}
-        selectFile={selectFile}
-        // selectFileHandle={selectFileHandle}
-      />
-    </div>
-  );
+  return <div>{data ? <Folder files={data} /> : "error"}</div>;
 }
 
 export default App;
